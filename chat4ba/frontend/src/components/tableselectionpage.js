@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 const TableSelectionPage = ({ tables }) => {
     const [selectedTables, setSelectedTables] = useState([]);
     const navigate = useNavigate();
@@ -15,8 +14,38 @@ const TableSelectionPage = ({ tables }) => {
     };
 
     const handleNext = () => {
-        // Navigate to the modeling page with selected tables
         navigate('/modeling', { state: { selectedTables } });
+    };
+
+    const saveRelationships = async () => {
+        const relationships = [
+            {
+                tableFrom: "orders",
+                columnFrom: "customer_id",
+                tableTo: "customers",
+                columnTo: "customer_id",
+            },
+        ];
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/define-relationships', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ relationships }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert('Relationships successfully saved!');
+                navigate('/home');
+            } else {
+                alert('Error: ' + data.detail);
+            }
+        } catch (error) {
+            alert('Error saving relationships');
+        }
     };
 
     return (
@@ -26,7 +55,7 @@ const TableSelectionPage = ({ tables }) => {
                 {tables.length > 0 ? (
                     tables.map((table, index) => (
                         <div key={index}>
-                            <input 
+                            <input
                                 type="checkbox"
                                 checked={selectedTables.includes(table)}
                                 onChange={() => handleTableSelection(table)}
@@ -40,6 +69,10 @@ const TableSelectionPage = ({ tables }) => {
             </div>
             <button onClick={handleNext} disabled={selectedTables.length === 0}>
                 Next
+            </button>
+
+            <button onClick={saveRelationships} disabled={selectedTables.length === 0}>
+                Save Relationships
             </button>
         </div>
     );

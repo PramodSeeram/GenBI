@@ -5,6 +5,7 @@ import SetupPage from './components/setuppage';
 import MySQLConnectionPage from './components/mysqlconnection';
 import TableSelectionPage from './components/tableselectionpage';
 import ModelingPage from './components/modellingpage';
+import HomePage from './components/home';
 
 const App = () => {
     const [tables, setTables] = useState([]);
@@ -19,7 +20,6 @@ const App = () => {
         if (source === "mysql") {
             navigate('/mysql-connection');
         }
-        
     };
 
     return (
@@ -28,6 +28,7 @@ const App = () => {
         <Route path="/mysql-connection" element={<MySQLConnectionPage onConnect={handleConnect} />} />
         <Route path="/select-tables" element={<TableSelectionPage tables={tables} />} />
         <Route path="/modeling" element={<ModelingPage />} />
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     );
 };
