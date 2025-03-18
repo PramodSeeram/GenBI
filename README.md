@@ -1,3 +1,4 @@
 # GenBI
 # QuickDBAPP
 # InventoryFullStack
+# InventoryFullStack
